@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -88,18 +86,21 @@ class _ChatScreenState extends State<ChatScreen> {
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    final messages = snapshot.data.doc;
+                    final messages = snapshot.data.document;
                     List<Text> messagelist = [];
-                    
-                    // for (var message in messages) {
-                    //   final txtmessage = message.data['text'];
-                    //   final sendermail = message.data['sender'];
-                    //   final mwidget = Text('$txtmessage from $sendermail');
-                    //   messagelist.add(mwidget);
-                    // }
 
-                    return Column(
-                      children: messagelist,
+                    for (var message in messages) {
+                      final txtmessage = message.data['text'];
+                      final sendermail = message.data['sender'];
+                      final mwidget = Text('$txtmessage from $sendermail');
+                      print('$txtmessage from $sendermail');
+                      messagelist.add(mwidget);
+                    }
+
+                    return Expanded(
+                      child: Column(
+                        children: messagelist,
+                      ),
                     );
                   }
                   switch (snapshot.connectionState) {
